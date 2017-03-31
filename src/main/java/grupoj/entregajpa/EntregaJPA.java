@@ -19,7 +19,7 @@ public class EntregaJPA {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("Goncalves");
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("PicaresDuPiña");
         EntityManager em = emf.createEntityManager();
 
         em.close();
