@@ -7,6 +7,7 @@ package grupoj.entregajpa;
 
 import java.io.Serializable;
 import java.util.List;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -28,22 +29,33 @@ public class Usuario implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @Column( name = "tipo", nullable = false)
     @Enumerated(EnumType.STRING)
     private Tipo tipo;
+    @Column( name = "email", nullable = false)
     private String email;
+    @Column( name = "nombre", nullable = false)
     private String nombre;
+    @Column( name = "apellidos", nullable = false)
     private String apellidos;
     private String multimedia;
+    @Column( name = "password", nullable = false)
     private String password;
+    @Column( name = "telefono", nullable = false)
     private String telefono;
+    @Column( name = "borrado", nullable = false)
     private boolean borrado;
     private String cargo;
     private String seccion;
+    
+    //Relación con la tabla eventos
     @ManyToMany
     @JoinTable(name = "jnd_meInteresa", 
     joinColumns = @JoinColumn(name = "Usuario_FK"), 
     inverseJoinColumns = @JoinColumn (name = "Evento_FK"))
     private List<Evento> meInteresa;
+    
+    //Relación con la tabla Usuario
     @ManyToMany
     @JoinTable(name = "jnd_administrar", 
     joinColumns = @JoinColumn(name = "Administrador_FK"), 
