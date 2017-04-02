@@ -6,28 +6,45 @@
 package grupoj.entregajpa;
 
 import java.io.Serializable;
-import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 
 /**
  *
- * @author David
+ * @author juanp
  */
 @Entity
-public class Usuario_No implements Serializable {
+public class Log implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String cookie;
+    private String cambiosRealizados;
+    @ManyToOne
+    @JoinColumn(name="admin_id_fk", nullable=false)
+    private Usuario logOwner;
 
+    public String getCambiosRealizados() {
+        return cambiosRealizados;
+    }
+
+    public void setCambiosRealizados(String cambiosRealizados) {
+        this.cambiosRealizados = cambiosRealizados;
+    }
+
+    public Usuario getLogOwner() {
+        return logOwner;
+    }
+
+    public void setLogOwner(Usuario logOwner) {
+        this.logOwner = logOwner;
+    }
+    
     public Long getId() {
         return id;
     }
@@ -35,18 +52,6 @@ public class Usuario_No implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
-    
-    public String getCookie() {
-        return cookie;
-    }
-
-    public void setCookie(String cookie) {
-        this.cookie = cookie;
-    }
-    
-    // Relaciones
-    @ManyToMany(mappedBy = "usuarioNoEnEventos")
-    private List<Usuario_No> listaUsuarioNo;
 
     @Override
     public int hashCode() {
@@ -58,10 +63,10 @@ public class Usuario_No implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Usuario_No)) {
+        if (!(object instanceof Log)) {
             return false;
         }
-        Usuario_No other = (Usuario_No) object;
+        Log other = (Log) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -70,7 +75,7 @@ public class Usuario_No implements Serializable {
 
     @Override
     public String toString() {
-        return "com.mycompany.pr_final.Usuario_No[ id=" + id + " ]";
+        return "grupoj.entregajpa.Log[ id=" + id + " ]";
     }
     
 }

@@ -1,12 +1,15 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package grupoj.entregajpa;
-
 
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Column;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -14,144 +17,96 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
  *
- * @author David
+ * @author juanp
  */
+@Entity
 public class Evento implements Serializable {
-    
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @Column( name = "nombre", nullable = false)
+
+    @Column(nullable = false)
     private String nombre;
-    @Column( name = "fecha", nullable = false)
+    @Column(nullable = false)
     @Temporal(TemporalType.DATE)
     private Date fecha;
-    @Column( name = "precio", nullable = false)
-    private double precio;
-    @Column( name = "tipo", nullable = false)
-    @Enumerated(EnumType.STRING)
-    private Tipo tipo;
-    private boolean verificado;
-    @Column( name = "descripcion", nullable = false)
-    private String descripcion;
-    @Column( name = "geolocalizacion", nullable = false)
-    private String geolocalizacion;
+    @Column(nullable = false)
+    private String tipo;
+    @Column(nullable = false)
     private boolean borrado;
+    private String descripcion;
+    private double precio;
+    private boolean verificado;
     
-    // Relaciones con tabla Usuario
-    @ManyToMany(mappedBy = "meInteresa")
-    private List<Usuario> meGustaUsuarios;
+    // TO-DO ||||
+    // Relacion consultar Bidireccional Evento <-> Usuario_no
+    @ManyToMany
+    private List<Usuario_no> consultado_by;
+    // TO-DO ^^^^
     
-    private Usuario me_gusta;
-    private Usuario sudido;
-    private Usuario crea_periodista;
-    private Usuario historialEventos;
-    private Usuario aceptar_Admin; 
+    // Relacion Bidireccional Tag <-> Evento
+    @ManyToMany
+    @JoinTable(name = "jnd_tag_evento",
+            joinColumns = @JoinColumn(name = "tags_FK"),
+            inverseJoinColumns = @JoinColumn(name = "evento_FK"))
+    private List<Tags> tagged_by;
     
-    // Relación con tabla Lugar
+    // Relacion crea_periodista Bidireccional Usuario <-> Evento
     @ManyToOne
-    private Lugar ocurre;
+    @JoinColumn(name="creado_por_FK", nullable=false)
+    private Usuario creado_by;
     
-    // Relación con tabla Usuario_No
-    @ManyToMany
-    @JoinTable(name = "rel_UsuarioNo_eventos",
-            joinColumns = @JoinColumn(name = "usuarioNo_fk"),
-            inverseJoinColumns = @JoinColumn(name = "evento_fk"))
-    private List<Evento> usuarioNoEnEventos;
-            
-    // Relación con tabla Tags
-    @ManyToMany
-    @JoinTable(name = "rel_tags_eventos",
-            joinColumns = @JoinColumn(name = "tags_fk"),
-            inverseJoinColumns = @JoinColumn(name = "evento_fk"))
-    private List<Evento> tagEnEventos;
+    // Relacion ocurre Bidireccional Evento <-> Lugar
+    @ManyToOne
+    @JoinColumn(name="ocurre_en_FK", nullable=false)
+    private Lugar ocurre_in;
     
+    // Relacion recibe Bidireccional Valoracion_eve <-> Evento
+    @OneToMany(mappedBy = "valoracion_sobre")
+    private List<Valoracion_eve> valoraciones_sobre;
     
+    // Relacion subir Bidireccional Usuario <-> Evento
+    @ManyToOne
+    @JoinColumn(name = "subido_by_FK", nullable = false)
+    private Usuario subido_by;
     
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public Date getFecha() {
-        return fecha;
-    }
-
-    public void setFecha(Date fecha) {
-        this.fecha = fecha;
-    }
-
-    public double getPrecio() {
-        return precio;
-    }
-
-    public void setPrecio(double precio) {
-        this.precio = precio;
-    }
-
-    public Tipo getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(Tipo tipo) {
-        this.tipo = tipo;
-    }
-
-    public boolean isVerificado() {
-        return verificado;
-    }
-
-    public void setVerificado(boolean verificado) {
-        this.verificado = verificado;
-    }
-
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
-    }
-
-    public String getGeolocalizacion() {
-        return geolocalizacion;
-    }
-
-    public void setGeolocalizacion(String geolocalizacion) {
-        this.geolocalizacion = geolocalizacion;
-    }
-
-    public boolean isBorrado() {
-        return borrado;
-    }
-
-    public void setBorrado(boolean borrado) {
-        this.borrado = borrado;
-    }
+    // Relacion acepta_admin Bidireccional Usuario <-> Evento
+    @ManyToOne
+    @JoinColumn(name = "aceptado_by_FK", nullable = false)
+    private Usuario aceptado_by;
     
+    // Autogen Code ----------
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (id != null ? id.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Evento)) {
+            return false;
+        }
+        Evento other = (Evento) object;
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "grupoj.entregajpa.Evento[ id=" + id + " ]";
+    }
     
 }

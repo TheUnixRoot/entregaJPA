@@ -7,6 +7,7 @@ package grupoj.entregajpa;
 
 import java.io.Serializable;
 import java.util.List;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -16,6 +17,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 
 /**
  *
@@ -29,133 +31,73 @@ public class Usuario implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @Enumerated(EnumType.STRING)
+    @Column(name = "tipo", nullable = false)
     private Tipo tipo;
+    @Column(name = "email", nullable = false)
     private String email;
+    @Column(name = "password", nullable = false)
+    private String password;
+    @Column(name = "borrado", nullable = false)
+    private boolean borrado;
     private String nombre;
     private String apellidos;
     private String multimedia;
-    private String password;
     private String telefono;
-    private boolean borrado;
     private String cargo;
     private String seccion;
+    
+    // Relacion subir Bidireccional Usuario <-> Evento
+    @OneToMany(mappedBy = "subido_by")
+    private List<Evento> eventos_subidos_by;
+    
+    // Relacion acepta_admin Bidireccional Usuario <-> Evento
+    @OneToMany(mappedBy = "aceptado_by")
+    private List<Evento> eventos_aceptados_by;
+    
+    // Relacion me_interesa Bidireccional Evento <-> Usuarios
     @ManyToMany
     @JoinTable(name = "jnd_meInteresa", 
-    joinColumns = @JoinColumn(name = "Usuario_FK"), 
-    inverseJoinColumns = @JoinColumn (name = "Evento_FK"))
+            joinColumns = @JoinColumn(name = "Usuario_FK"),
+            inverseJoinColumns = @JoinColumn (name = "Evento_FK"))
     private List<Evento> meInteresa;
-    @ManyToMany
-    @JoinTable(name = "jnd_administrar", 
-    joinColumns = @JoinColumn(name = "Administrador_FK"), 
-    inverseJoinColumns = @JoinColumn (name = "Usuario_FK"))
-    private List<Usuario> administrar; 
-
-    public List<Usuario> getAdministrar() {
-        return administrar;
-    }
-
-    public void setAdministrar(List<Usuario> administrar) {
-        this.administrar = administrar;
-    }
-
-    public Tipo getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(Tipo tipo) {
-        this.tipo = tipo;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getApellidos() {
-        return apellidos;
-    }
-
-    public void setApellidos(String apellidos) {
-        this.apellidos = apellidos;
-    }
-
-    public String getMultimedia() {
-        return multimedia;
-    }
-
-    public void setMultimedia(String multimedia) {
-        this.multimedia = multimedia;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getTelefono() {
-        return telefono;
-    }
-
-    public void setTelefono(String telefono) {
-        this.telefono = telefono;
-    }
-
-    public boolean isBorrado() {
-        return borrado;
-    }
-
-    public void setBorrado(boolean borrado) {
-        this.borrado = borrado;
-    }
-
-    public String getCargo() {
-        return cargo;
-    }
-
-    public void setCargo(String cargo) {
-        this.cargo = cargo;
-    }
-
-    public String getSeccion() {
-        return seccion;
-    }
-
-    public void setSeccion(String seccion) {
-        this.seccion = seccion;
-    }
-
-    public List<Evento> getMeInteresa() {
-        return meInteresa;
-    }
-
-    public void setMeInteresa(List<Evento> meInteresa) {
-        this.meInteresa = meInteresa;
-    }
-
     
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
+    // Relacion administrar_admin Unidireccional Admin -> Usuarios
+    @ManyToMany
+    @JoinTable(name = "jnd_administrador_usuario", 
+    joinColumns = @JoinColumn(name = "administrador_FK"), 
+    inverseJoinColumns = @JoinColumn (name = "usuario_FK"))
+    private List<Usuario> usuarios_administrados_by; 
+    
+    // Relacion generar_admin Bidireccional Log <-> Usuario
+    @OneToMany(mappedBy="logOwner")
+    private List<Log> ownedLogs;
+    
+    // Relacion recibir Bidireccional Usuario <-> Notificacion
+    @OneToMany(mappedBy = "usuario")
+    private List<Notificacion> notificaciones_recibidas_by;
+    
+    // Relacion gestiona Bidireccional Usuario <-> Anuncio
+    @OneToMany(mappedBy = "usuario")
+    private List<Anuncio> anuncios_gestionados_by;
+    
+    // Relacion crea_periodista Bidireccional Usuario <-> Evento
+    @OneToMany(mappedBy = "creado_by")
+    private List<Evento> eventos_creados_by;
+    
+    // Relacion historial_eventos Unidireccional Usuario -> Evento
+    @OneToMany(targetEntity = Evento.class)
+    private List<Evento> historial_eventos_of;
+    
+    // Relacion realizar (evento) Bidireccional Usuario <-> Valoracion_eve
+    @OneToMany(mappedBy = "realizado_por")
+    private List<Valoracion_eve> valoraciones_eve_realizadas_by;
+    
+    // Relacion realizar (lugar) Bidireccional Usuario <-> Valoracion_lug
+    @OneToMany(mappedBy = "realizado_por")
+    private List<Valoracion_lug> valoraciones_lug_realizadas_by;
+    
+    
+    // Autogen Code ---------------------------
     @Override
     public int hashCode() {
         int hash = 0;

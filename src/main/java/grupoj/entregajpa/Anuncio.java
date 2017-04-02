@@ -27,11 +27,6 @@ public class Anuncio implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @ManyToOne
-    private Usuario user;
-    private String dimensiones;
-    private String empresa;
-    private int prioridad;
     @Column(nullable = false)
     @Temporal(TemporalType.DATE)
     private Date fecha_public;
@@ -39,6 +34,11 @@ public class Anuncio implements Serializable {
     private int dias_contratados;
     @Column(nullable = false)
     private String multimedia;
+    private String dimensiones;
+    private String empresa;
+    private int prioridad;
+    @ManyToOne
+    private Usuario usuario;
 
     public Long getId() {
         return id;
@@ -46,6 +46,30 @@ public class Anuncio implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Date getFecha_public() {
+        return fecha_public;
+    }
+
+    public void setFecha_public(Date fecha_public) {
+        this.fecha_public = fecha_public;
+    }
+
+    public int getDias_contratados() {
+        return dias_contratados;
+    }
+
+    public void setDias_contratados(int dias_contratados) {
+        this.dias_contratados = dias_contratados;
+    }
+
+    public String getMultimedia() {
+        return multimedia;
+    }
+
+    public void setMultimedia(String multimedia) {
+        this.multimedia = multimedia;
     }
 
     public String getDimensiones() {
@@ -72,32 +96,17 @@ public class Anuncio implements Serializable {
         this.prioridad = prioridad;
     }
 
-    public Date getFecha_public() {
-        return fecha_public;
+    public Usuario getUsuario() {
+        return usuario;
     }
 
-    public void setFecha_public(Date fecha_public) {
-        this.fecha_public = fecha_public;
-    }
-
-    public int getDias_contratados() {
-        return dias_contratados;
-    }
-
-    public void setDias_contratados(int dias_contratados) {
-        this.dias_contratados = dias_contratados;
-    }
-
-    public String getMultimedia() {
-        return multimedia;
-    }
-
-    public void setMultimedia(String multimedia) {
-        this.multimedia = multimedia;
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
     
     
-
+    // Autogen Code -------------------
+    
     @Override
     public int hashCode() {
         int hash = 0;

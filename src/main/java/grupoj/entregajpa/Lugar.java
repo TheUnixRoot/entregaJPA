@@ -6,10 +6,13 @@
 package grupoj.entregajpa;
 
 import java.io.Serializable;
+import java.util.List;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 /**
  *
@@ -22,69 +25,24 @@ public class Lugar implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String direccion;
-    private String fotos;
+    @Column(nullable = false)
     private String nombre;
-    private String descripcion;
+    @Column(nullable = false)
     private String geolocalizacion;
+    @Column(nullable = false)
     private boolean borrado;
+    private String fotos;
+    private String descripcion;
+    
+    // Relacion ocurre Bidireccional Evento <-> Lugar
+    @OneToMany(mappedBy = "ocurre_in")
+    private List<Evento> eventos_ocurren_in;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getDireccion() {
-        return direccion;
-    }
-
-    public void setDireccion(String direccion) {
-        this.direccion = direccion;
-    }
-
-    public String getFotos() {
-        return fotos;
-    }
-
-    public void setFotos(String fotos) {
-        this.fotos = fotos;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
-    }
-
-    public String getGeolocalizacion() {
-        return geolocalizacion;
-    }
-
-    public void setGeolocalizacion(String geolocalizacion) {
-        this.geolocalizacion = geolocalizacion;
-    }
-
-    public boolean isBorrado() {
-        return borrado;
-    }
-
-    public void setBorrado(boolean borrado) {
-        this.borrado = borrado;
-    }
-
+    // Relacion recibe Bidireccional Valoracion_lug <-> Lugar
+    @OneToMany(mappedBy = "valoracion_sobre")
+    private List<Valoracion_lug> valoraciones_sobre;
+    
+    // Autogen Code ------------
     @Override
     public int hashCode() {
         int hash = 0;

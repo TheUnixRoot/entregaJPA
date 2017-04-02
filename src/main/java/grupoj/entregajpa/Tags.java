@@ -7,6 +7,7 @@ package grupoj.entregajpa;
 
 import java.io.Serializable;
 import java.util.List;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -26,29 +27,14 @@ public class Tags implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @Column(nullable = false)
     private String texto;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
+    // Relacion Bidireccional Tag <-> Evento
+    @ManyToMany(mappedBy = "tagged_by")
+    private List<Evento> tagged_in;
     
-    public String getTexto() {
-        return texto;
-    }
-
-    public void setTexto(String texto) {
-        this.texto = texto;
-    }
-
-    // Relaciones
-    @ManyToMany(mappedBy = "tagEnEventos")
-    private List<Tags> listaTags;
-    
-    
+    // Autogen Code --------------------
     @Override
     public int hashCode() {
         int hash = 0;

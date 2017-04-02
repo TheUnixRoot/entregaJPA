@@ -10,7 +10,6 @@ package grupoj.entregajpa;
  * @author Miguel
  */
 public enum Tipo {
-    
     Periodista,
     Administrador,
     Usuario

@@ -19,54 +19,22 @@ import javax.persistence.Temporal;
  * @author Ivan
  */
 @Entity
-public class Notificiacion implements Serializable {
+public class Notificacion implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String contenido;
+    
     @ManyToOne
     private Usuario usuario;
     
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date fecha;
 
-    public Usuario getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
-    }
+    // Autogen Code -----------------------------
     
-    
-    public String getContenido() {
-        return contenido;
-    }
-
-    public void setContenido(String contenido) {
-        this.contenido = contenido;
-    }
-
-    public Date getFecha() {
-        return fecha;
-    }
-
-    public void setFecha(Date fecha) {
-        this.fecha = fecha;
-    }
-   
-   
-    
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -77,10 +45,10 @@ public class Notificiacion implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Notificiacion)) {
+        if (!(object instanceof Notificacion)) {
             return false;
         }
-        Notificiacion other = (Notificiacion) object;
+        Notificacion other = (Notificacion) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }

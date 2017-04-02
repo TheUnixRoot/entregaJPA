@@ -11,6 +11,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 /**
  *
@@ -27,57 +29,19 @@ public class Valoracion_eve implements Serializable {
     private int calificacion;
     private String comentario;
     private String fotos;
-    private Usuario realizadoPor;
-    private Evento evento;
+    
+    // Relacion Bidireccional Usuario <-> Valoracion_eve
+    @ManyToOne
+    @JoinColumn(name="realizado_por_fk", nullable=false)
+    private Usuario realizado_por;
+    
+    // Relacion Bidireccional Evento <-> Valoracion_eve
+    @ManyToOne
+    @JoinColumn(name="valoracion_sobre_fk", nullable=false)
+    private Evento valoracion_sobre;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public int getCalificacion() {
-        return calificacion;
-    }
-
-    public void setCalificacion(int calificacion) {
-        this.calificacion = calificacion;
-    }
-
-    public String getComentario() {
-        return comentario;
-    }
-
-    public void setComentario(String comentario) {
-        this.comentario = comentario;
-    }
-
-    public String getFotos() {
-        return fotos;
-    }
-
-    public void setFotos(String fotos) {
-        this.fotos = fotos;
-    }
-
-    public Usuario getRealizadoPor() {
-        return realizadoPor;
-    }
-
-    public void setRealizadoPor(Usuario realizadoPor) {
-        this.realizadoPor = realizadoPor;
-    }
-
-    public Evento getEvento() {
-        return evento;
-    }
-
-    public void setEvento(Evento evento) {
-        this.evento = evento;
-    }
-
+    
+    // Autogen Code ---------------------
     @Override
     public int hashCode() {
         int hash = 0;

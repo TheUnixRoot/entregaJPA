@@ -11,6 +11,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 /**
  *
@@ -27,57 +29,20 @@ public class Valoracion_lug implements Serializable {
     private int calificacion;
     private String comentario;
     private String fotos;
-    private Usuario realizadoPor;
-    private Lugar lugar;
+    
+    // Relacion Bidireccional Usuario <-> Valoracion_lug
+    @ManyToOne
+    @JoinColumn(name="realizado_por_fk", nullable=false)
+    private Usuario realizado_por;
+    
+    // Relacion Bidireccional Lugar <-> Valoracion_lug
+    @ManyToOne
+    @JoinColumn(name="valoracion_sobre_fk", nullable=false)
+    private Lugar valoracion_sobre;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public int getCalificacion() {
-        return calificacion;
-    }
-
-    public void setCalificacion(int calificacion) {
-        this.calificacion = calificacion;
-    }
-
-    public String getComentario() {
-        return comentario;
-    }
-
-    public void setComentario(String comentario) {
-        this.comentario = comentario;
-    }
-
-    public String getFotos() {
-        return fotos;
-    }
-
-    public void setFotos(String fotos) {
-        this.fotos = fotos;
-    }
-
-    public Usuario getRealizadoPor() {
-        return realizadoPor;
-    }
-
-    public void setRealizadoPor(Usuario realizadoPor) {
-        this.realizadoPor = realizadoPor;
-    }
-
-    public Lugar getLugar() {
-        return lugar;
-    }
-
-    public void setLugar(Lugar lugar) {
-        this.lugar = lugar;
-    }
-
+    
+    
+    // Autogen Code -------------------------
     @Override
     public int hashCode() {
         int hash = 0;
